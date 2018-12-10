@@ -6,11 +6,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.io.IOException;
 import java.lang.String;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
+import java.math.BigDecimal;
+
 
 public class StockView extends AppCompatActivity {
 
@@ -22,13 +29,31 @@ public class StockView extends AppCompatActivity {
         String getSymbol = "";
         if (b != null)
             getSymbol = b.getString("key");
+        System.out.println(getSymbol);
+
+
+ // https://financequotes-api.com/
+        
+        Stock stock = null;
+        try {
+            stock = YahooFinance.get("INTC");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        BigDecimal sprice = stock.getQuote().getPrice();
+
         TextView textView = (TextView) findViewById(R.id.textView);
         textView.setText(getSymbol);
+
         TextView price = (TextView) findViewById(R.id.currentPrice);
-        String price1 = getSymbol + "Price";
+
+        String price1 = "Hello";
+                //stockPrice.toString();
+
         price.setText(price1);
         final GraphView graph = (GraphView) findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
                 new DataPoint(2, 3),
@@ -40,7 +65,7 @@ public class StockView extends AppCompatActivity {
         oneDay.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 graph.removeAllSeries();
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
                         new DataPoint(0, 1),
                         new DataPoint(1, 3),
                         new DataPoint(2, 5),
@@ -54,7 +79,7 @@ public class StockView extends AppCompatActivity {
         oneWeek.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 graph.removeAllSeries();
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
                         new DataPoint(0, 2),
                         new DataPoint(1, 1),
                         new DataPoint(2, 4),
@@ -68,7 +93,7 @@ public class StockView extends AppCompatActivity {
         oneMonth.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 graph.removeAllSeries();
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
                         new DataPoint(0, 4),
                         new DataPoint(1, 3),
                         new DataPoint(2, 1),
@@ -82,7 +107,7 @@ public class StockView extends AppCompatActivity {
         sixMonth.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 graph.removeAllSeries();
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
                         new DataPoint(0, 1),
                         new DataPoint(1, 2),
                         new DataPoint(2, 5),
@@ -93,8 +118,8 @@ public class StockView extends AppCompatActivity {
             }
         });
 
-        final Button calculate = (Button)findViewById(R.id.calculate);
-        final EditText text = (EditText)findViewById(R.id.editText);
+        final Button calculate = (Button) findViewById(R.id.calculate);
+        final EditText text = (EditText) findViewById(R.id.editText);
         final TextView editable = (TextView) findViewById(R.id.textView2);
         final String symbol = getSymbol;
         calculate.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +131,7 @@ public class StockView extends AppCompatActivity {
                 } else {
                     n = 0;
                 }
-                String finalt = "It will cost $"+ n + " at " + symbol + " per share";
+                String finalt = "It will cost $" + n + " at " + symbol + " per share";
                 editable.setText(finalt);
             }
         });
