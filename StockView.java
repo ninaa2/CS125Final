@@ -48,9 +48,8 @@ public class StockView extends AppCompatActivity {
 
         TextView price = (TextView) findViewById(R.id.currentPrice);
 
-        String price1 = "Hello";
-                //stockPrice.toString();
-
+        String price1 = getSymbol + "Price";
+                
         price.setText(price1);
         final GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
